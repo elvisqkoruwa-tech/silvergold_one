@@ -15,15 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Clear old GitHub Actions cache
-        run: |
-          echo "Clearing old action caches..."
-          rm -rf ~/.cache/actions || true
-          rm -rf ~/.local/share/actions || true
-          rm -rf /home/runner/.cache/actions || true
-          rm -rf /home/runner/work/_actions || true
-          echo "Cache cleared."
-
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
