@@ -1,0 +1,42 @@
+name: Build SILVERGOLD APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Force-remove any cached artifact actions
+        run: |
+          echo "Removing cached GitHub Actions metadata..."
+          rm -rf ~/.cache/actions
+          rm -rf ~/.local/share/actions
+          rm -rf /home/runner/.cache/actions || true
+          rm -rf /home/runner/work/_actions || true
+          echo "Cache cleared."
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload APK artifact (v4 only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SILVERGOLD-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
