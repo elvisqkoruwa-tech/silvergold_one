@@ -13,13 +13,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Force-remove any cached artifact actions
+      - name: Clear old GitHub Actions cache
         run: |
-          echo "Removing cached GitHub Actions metadata..."
-          rm -rf ~/.cache/actions
-          rm -rf ~/.local/share/actions
+          echo "Clearing old action caches..."
+          rm -rf ~/.cache/actions || true
+          rm -rf ~/.local/share/actions || true
           rm -rf /home/runner/.cache/actions || true
           rm -rf /home/runner/work/_actions || true
           echo "Cache cleared."
@@ -35,7 +35,7 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: Upload APK artifact (v4 only)
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: SILVERGOLD-APK
